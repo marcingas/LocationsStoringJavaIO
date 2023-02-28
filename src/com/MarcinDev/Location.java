@@ -23,9 +23,9 @@ public class Location {
 //    public void addExit (String direction, int location){
 //        exits.put(direction,location);
 //    }
-    //public int getLocationId() {
-    //    return locationId;
-  //  }
+    public int getLocationId() {
+       return locationId;
+    }
 
     public String getDescription() {
         return description;

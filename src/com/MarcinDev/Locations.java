@@ -1,5 +1,7 @@
 package com.MarcinDev;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +10,20 @@ import java.util.Set;
 public class Locations implements Map<Integer, Location> {
     //create locations object to store our data
     private static Map<Integer,Location>locations = new HashMap<Integer,Location>();
+
+    public static void main(String[] args) {
+        FileWriter locfile = null;
+        try{
+            locfile = new FileWriter("locations.txt");
+            for(Location location : locations.values()){
+                locfile.write(location.getLocationId() + ","+ location.getDescription() + "\n");
+            }
+            locfile.close();
+        } catch (IOException e) {
+            System.out.println("In catch block");
+            e.printStackTrace();
+        }
+    }
 
     static{
         Map<String, Integer>tempExit = new HashMap<>();
