@@ -18,10 +18,20 @@ public class Locations implements Map<Integer, Location> {
             for(Location location : locations.values()){
                 locfile.write(location.getLocationId() + ","+ location.getDescription() + "\n");
             }
-            locfile.close();
+
         } catch (IOException e) {
-            System.out.println("In catch block");
+            System.out.println("In: catch block");
             e.printStackTrace();
+        } finally {
+            System.out.println("in: Finally block ");
+            try{
+                if(locfile != null){
+                    System.out.println("Attempt to close locfile");
+            locfile.close();
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
 
