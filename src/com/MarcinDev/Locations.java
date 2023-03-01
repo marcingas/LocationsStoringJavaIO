@@ -1,8 +1,10 @@
 package com.MarcinDev;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.channels.ScatteringByteChannel;
 import java.util.*;
 
 public class Locations implements Map<Integer, Location> {
@@ -14,7 +16,7 @@ public class Locations implements Map<Integer, Location> {
         FileWriter dirFile = new FileWriter("directions.txt")){
             for(Location location : locations.values()){
                 locfile.write(location.getLocationId() + ","+ location.getDescription() + "\n");
-                for (String direction:location.getExits().keySet()){
+                for (String direction : location.getExits().keySet()){
                     dirFile.write(location.getLocationId() + "," + direction +"," + location.getExits().get(direction) + "\n");
                 }
             }
@@ -35,6 +37,28 @@ public class Locations implements Map<Integer, Location> {
                 locations.put(loc, new Location(loc,description,tempExit));
             }
 
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            if(scanner != null){
+                scanner.close();
+            }
+        }
+        //read the exits:
+        try{
+            scanner = new Scanner(new BufferedReader(new FileReader("directions.txt")));
+            scanner.useDelimiter(",");
+            while(scanner.hasNextLine()){
+                int loc = scanner.nextInt();
+                scanner.skip(scanner.delimiter());
+                String direction = scanner.next();
+                scanner.skip(scanner.delimiter());
+                String dest = scanner.nextLine();
+                int destination = Integer.parseInt(dest);
+                System.out.println(loc + ": " + direction + ": " + destination);
+                Location location = locations.get(loc);
+                location.addExit(direction,destination);
+            }
         }catch (IOException e){
             e.printStackTrace();
         }finally {
@@ -65,11 +89,8 @@ public class Locations implements Map<Integer, Location> {
 //        tempExit.put("S",1);
 //        tempExit.put("W",2);
 //        locations.put(5, new Location(5,"You are in the forest", tempExit));
-//    }
-//    @Override
-//    public int size() {
-//        return locations.size();
     }
+
     @Override
    public int size() {
         return locations.size();
