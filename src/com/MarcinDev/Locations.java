@@ -1,21 +1,18 @@
 package com.MarcinDev;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.channels.ScatteringByteChannel;
 import java.util.*;
 
 public class Locations implements Map<Integer, Location> {
     //create locations object to store our data
-    private static Map<Integer,Location>locations = new HashMap<Integer,Location>();
+    private static Map<Integer,Location>locations = new LinkedHashMap<Integer,Location>();
 
     public static void main(String[] args) throws IOException{
-        try(FileWriter locfile = new FileWriter("locations.txt");
-        FileWriter dirFile = new FileWriter("directions.txt")){
+        try(BufferedWriter locFile = new BufferedWriter(new FileWriter("locations.txt"));
+            BufferedWriter dirFile = new BufferedWriter(new FileWriter("directions.txt"))){
             for(Location location : locations.values()){
-                locfile.write(location.getLocationId() + ","+ location.getDescription() + "\n");
+                locFile.write(location.getLocationId() + ","+ location.getDescription() + "\n");
                 for (String direction : location.getExits().keySet()){
                     dirFile.write(location.getLocationId() + "," + direction +"," + location.getExits().get(direction) + "\n");
                 }
