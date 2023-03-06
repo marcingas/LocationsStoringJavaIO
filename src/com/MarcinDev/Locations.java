@@ -29,21 +29,25 @@ public class Locations implements Map<Integer, Location> {
 
     static{
         try(DataInputStream locFile = new DataInputStream(new BufferedInputStream(new FileInputStream("locations.dat")))){
-            while(true){
-                Map<String, Integer> exits = new LinkedHashMap<>();
-                int locId = locFile.readInt();
-                String description = locFile.readUTF();
-                int numExits = locFile.readInt();
-                System.out.println("read location " + locId + ": " + description);
-                System.out.println("found " + numExits + " exits");
-                for(int i = 0; i < numExits;i++){
-                    String direction = locFile.readUTF();
-                    int destination = locFile.readInt();
-                    exits.put(direction, destination);
-                    System.out.println("\t\t" + direction + "," + destination);
+            boolean eof = false;
+            while(!eof){
+                try{
+                    Map<String, Integer> exits = new LinkedHashMap<>();
+                    int locId = locFile.readInt();
+                    String description = locFile.readUTF();
+                    int numExits = locFile.readInt();
+                    System.out.println("read location " + locId + ": " + description);
+                    System.out.println("found " + numExits + " exits");
+                    for(int i = 0; i < numExits;i++){
+                        String direction = locFile.readUTF();
+                        int destination = locFile.readInt();
+                        exits.put(direction, destination);
+                        System.out.println("\t\t" + direction + "," + destination);
+                    }
+                    locations.put(locId, new Location(locId, description, exits));
+                }catch (EOFException e){
+                    eof = true;
                 }
-                locations.put(locId, new Location(locId, description, exits));
-
             }
         }catch(IOException io){
             System.out.println("IO Exception");
