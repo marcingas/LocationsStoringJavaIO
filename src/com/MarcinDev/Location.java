@@ -1,13 +1,15 @@
 package com.MarcinDev;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Location {
+public class Location implements Serializable {
     private final int locationId;
     private final String description;
     private final Map <String, Integer> exits;
+    private long serialVersionUID = 1L;
 
 
     public Location(int locationId, String description, Map<String, Integer>exits) {
