@@ -39,6 +39,12 @@ public class Locations implements Map<Integer, Location> {
                 index.put(location.getLocationId(), record);
                 startPointer = (int) rao.getFilePointer();
             }
+            rao.seek(indexStart);
+            for(Integer locationId : index.keySet()){
+                rao.writeInt(locationId);
+                rao.writeInt(index.get(locationId).getStartByte());
+                rao.writeInt(index.get(locationId).getLength());
+            }
         }
     }
 
